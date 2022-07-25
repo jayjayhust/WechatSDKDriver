@@ -1,6 +1,8 @@
 # WechatSDKDriver
 
-This is an unreal engine plugin for WeChat sdk development on mobile device.
+This is an unreal engine plugin for WeChat sdk(https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/Android.html) development on mobile device.
+
+
 
 ###  Functions already done
 
