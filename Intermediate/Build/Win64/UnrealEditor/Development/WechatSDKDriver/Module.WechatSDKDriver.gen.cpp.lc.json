@@ -1,0 +1,18 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\intermediate\\build\\win64\\unrealeditor\\development\\wechatsdkdriver\\module.wechatsdkdriver.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\ue5\\engine\\intermediate\\build\\win64\\unrealeditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\intermediate\\build\\win64\\unrealeditor\\development\\wechatsdkdriver\\definitions.wechatsdkdriver.h",
+            "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\intermediate\\build\\win64\\unrealeditor\\inc\\wechatsdkdriver\\wechatsdkdriver.init.gen.cpp",
+            "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\intermediate\\build\\win64\\unrealeditor\\inc\\wechatsdkdriver\\wechatsdkdriverbplibrary.gen.cpp",
+            "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\source\\wechatsdkdriver\\public\\wechatsdkdriverbplibrary.h",
+            "f:\\ue5\\engine\\source\\runtime\\engine\\public\\imageutils.h",
+            "e:\\jay.programs\\urealengine\\ue5_prj\\test_prj\\myandroidproject\\plugins\\wechatsdkdriver\\intermediate\\build\\win64\\unrealeditor\\inc\\wechatsdkdriver\\wechatsdkdriverbplibrary.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

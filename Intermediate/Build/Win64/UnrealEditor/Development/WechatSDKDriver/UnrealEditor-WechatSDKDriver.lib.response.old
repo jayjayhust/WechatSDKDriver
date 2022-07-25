@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-WechatSDKDriver.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"..\Intermediate\Build\Win64\UnrealEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"E:\jay.programs\urealEngine\UE5_Prj\Test_Prj\Test_DedicatedServer\Test_DSMobile\Plugins\WechatSDKDriver\Intermediate\Build\Win64\UnrealEditor\Development\WechatSDKDriver\Module.WechatSDKDriver.cpp.obj"
+"E:\jay.programs\urealEngine\UE5_Prj\Test_Prj\Test_DedicatedServer\Test_DSMobile\Plugins\WechatSDKDriver\Intermediate\Build\Win64\UnrealEditor\Development\WechatSDKDriver\Module.WechatSDKDriver.gen.cpp.obj"
+"..\Intermediate\Build\Win64\UnrealEditor\Development\Default.rc2.res"
+/OUT:"E:\jay.programs\urealEngine\UE5_Prj\Test_Prj\Test_DedicatedServer\Test_DSMobile\Plugins\WechatSDKDriver\Intermediate\Build\Win64\UnrealEditor\Development\WechatSDKDriver\UnrealEditor-WechatSDKDriver.lib"

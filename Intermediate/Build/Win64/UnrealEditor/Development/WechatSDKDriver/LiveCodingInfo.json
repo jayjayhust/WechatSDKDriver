@@ -1,0 +1,14 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.WechatSDKDriver.cpp.obj": [
+			"WechatSDKDriver.cpp.obj",
+			"WechatSDKDriverBPLibrary.cpp.obj",
+			"WechatSDKJNI.cpp.obj"
+		],
+		"Module.WechatSDKDriver.gen.cpp.obj": [
+			"WechatSDKDriver.init.gen.cpp.obj",
+			"WechatSDKDriverBPLibrary.gen.cpp.obj"
+		]
+	}
+}

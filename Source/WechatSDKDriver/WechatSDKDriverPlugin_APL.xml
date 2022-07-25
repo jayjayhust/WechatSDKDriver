@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+  <!--init：初始化时调用-->
+	<init>
+		<log text="[Jay] WechatSDKDriverPlugin_APL INIT"/>
+	</init>
+
+	<proguardAdditions>
+		<insert>
+		</insert>
+	</proguardAdditions>
+
+  <!--resourceCopies：在NDK之后复制文件，$S(PluginDir)为xml所在目录，$S(BuildDir)为Intermediate/Android/APK-->
+	<!--<resourceCopies>
+		<copyFile src = "$S(PluginDir)/../../Libs/Android/AndroidLib.aar" dst = "$S(BuildDir)/libs/AndroidLib.aar" />
+    <copyFile src = "$S(PluginDir)/../../Libs/Android/wechat-sdk-android-without-mta-6.8.0.aar" dst = "$S(BuildDir)/libs/wechat-sdk-android-without-mta-6.8.0.aar" />
+  </resourceCopies>-->
+
+  <!-- AAR dependencies -->
+  <!--<AARImports>
+    <if condition="bEnabled">
+      <true>
+        <if condition="bGradle">
+          <false>
+            <insertValue value="repository $S(PluginDir)/../../Libs/Android"/>
+            <insertNewline/>
+            <insertValue value="AndroidLib" />
+            <insertNewline/>
+            <insertValue value="wechat-sdk-android-without-mta-6.8.0" />
+            <insertNewline/>
+          </false>
+        </if>
+      </true>
+    </if>
+  </AARImports>-->
+  
+  <!--gameActivityImportAdditions：填写java导入包的代码，位置在\项目\Intermediate\Android\arm64\src\com\epicgames\unreal\GameActivity.java-->
+	<gameActivityImportAdditions>
+		<insert>
+      import android.graphics.Bitmap;
+      import android.graphics.BitmapFactory;
+      import android.graphics.Bitmap.CompressFormat;
+      import android.os.Bundle;
+      import android.os.Environment;
+      import android.view.View;
+      import android.widget.Toast;
+      import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+      import com.tencent.mm.opensdk.modelmsg.WXImageObject;
+      import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+      import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+      import com.tencent.mm.opensdk.openapi.IWXAPI;
+      import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+    </insert>
+	</gameActivityImportAdditions>
+  
+  <!--gameActivityClassAdditions：编写需要给C++调用的java代码，位置在\项目\Intermediate\Android\arm64\src\com\epicgames\unreal\GameActivity.java -->
+	<gameActivityClassAdditions>
+		<insert>
+      private String APP_ID = "wxb8f0067559f93898";
+      private final int THUMB_SIZE = 150;
+      private final String SDCARD_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+      public void ShareTextToTimeline() {
+        Log.debug("==================================> ShareTextToTimeline: Step 1");
+
+        IWXAPI api; // Wechat main API
+        api = WXAPIFactory.createWXAPI(this, APP_ID, false);
+        int mTargetScene = SendMessageToWX.Req.WXSceneTimeline;
+        String text = "dump text";
+        if (text == null || text.length() == 0) {
+          return;
+        }
+        Log.debug("==================================> ShareTextToTimeline: Step 2");
+
+        WXTextObject textObj = new WXTextObject();
+        textObj.text = text;
+        Log.debug("==================================> ShareTextToTimeline: Step 3");
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObj;
+        // msg.title = "Will be ignored";
+        msg.description = text;
+        msg.mediaTagName = "I'm mediaTagName";
+        Log.debug("==================================> ShareTextToTimeline: Step 4");
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("text");
+        req.message = msg;
+        req.scene = mTargetScene;
+        Log.debug("==================================> ShareTextToTimeline: Step 5");
+
+        api.sendReq(req);
+        Log.debug("==================================> ShareTextToTimeline: Step 6");
+      }
+
+      private String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+      }
+
+      public void SendTextToTimeline(String text) {
+        Log.debug("==================================> SendTextToTimeline: Step 1");
+
+        IWXAPI api; // Wechat main API
+        api = WXAPIFactory.createWXAPI(this, APP_ID, false);
+        int mTargetScene = SendMessageToWX.Req.WXSceneTimeline;
+        if (text == null || text.length() == 0) {
+          return;
+        }
+        Log.debug("==================================> SendTextToTimeline: Step 2");
+
+        WXTextObject textObj = new WXTextObject();
+        textObj.text = text;
+        Log.debug("==================================> SendTextToTimeline: Step 3");
+
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = textObj;
+        // msg.title = "Will be ignored";
+        msg.description = text;
+        msg.mediaTagName = "I'm mediaTagName";
+        Log.debug("==================================> SendTextToTimeline: Step 4");
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("text");
+        req.message = msg;
+        req.scene = mTargetScene;
+        Log.debug("==================================> SendTextToTimeline: Step 5");
+
+        api.sendReq(req);
+        Log.debug("==================================> SendTextToTimeline: Step 6");
+      }
+
+      private String Screenshot() {
+        String imagePath = "";
+
+        // Get screen
+        View dView = getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+        if (bmp != null)
+        {
+          try {
+            // Prepare the image file prefix(timestamp)
+            long nowTime = System.currentTimeMillis();
+
+            // Get SD CARD directory
+            String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+            // Get image file directory
+            //String filePath = sdCardPath + File.separator + "screenshot.png";
+            String filePath = sdCardPath + File.separator + "screenshot_" + nowTime + ".png";
+            imagePath = filePath;
+
+            File file = new File(filePath);
+            FileOutputStream os = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+            os.flush();
+            os.close();
+            Log.debug("==================================> Screenshot: Success!");
+          } catch (Exception e) {
+            Log.debug("==================================> Screenshot: Exception!");
+          }
+        }
+
+        return imagePath;
+      }
+
+      public void SendImageToTimeline(String imagePath) {
+        Log.debug("==================================> SendImageToTimeline: Step 1");
+        //imagePath = "/storage/emulated/0/Android/data/com.BSL.Broadverse/files/UnrealGame/MyAndroidProject/MyAndroidProject/Saved/BugIt/Android/BugScreenShot_00001.png";
+        imagePath = getExternalFilesDir(null).getAbsolutePath() + "/UnrealGame/MyAndroidProject/MyAndroidProject/Saved/BugIt/Android/" + imagePath;
+        
+        IWXAPI api; // Wechat main API
+        api = WXAPIFactory.createWXAPI(this, APP_ID, false);
+        int mTargetScene = SendMessageToWX.Req.WXSceneTimeline;
+
+        // Method 1: directy use an image resource
+        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.send_img); // Shall replace the "R.drawable.send_img" instead of input parameter
+        // Method 2: use bmp file path to derive a image(firstly you should print screen and save to bmp file using java code)
+        //String path = SDCARD_ROOT + "/test.png";
+        File file = new File(imagePath);
+        if (!file.exists()) {
+          Log.debug("==================================> SendImageToTimeline: imagePath==>" + imagePath + "=== incorrect!");
+          String sdCardPath = Environment.getExternalStorageDirectory().getPath();
+          Log.debug("==================================> SendImageToTimeline: sdCardPath==>" + sdCardPath);
+          String appPath = getFilesDir().getPath();
+          Log.debug("==================================> SendImageToTimeline: getFilesDir()==>" + appPath);
+          String externalFilesDir = getExternalFilesDir(null).getAbsolutePath(); // /storage/emulated/0/Android/data/com.BSL.Broadverse/files
+          Log.debug("==================================> SendImageToTimeline: getExternalFilesDir(null).getAbsolutePath()==>" + externalFilesDir);
+          return;
+        }
+        Log.debug("==================================> SendImageToTimeline: Step 2");
+        Bitmap bmp = BitmapFactory.decodeFile(imagePath);
+        WXImageObject imgObj = new WXImageObject(bmp);
+        
+        Log.debug("==================================> SendImageToTimeline: Step 3");
+        WXMediaMessage msg = new WXMediaMessage();
+        msg.mediaObject = imgObj;
+        
+        Log.debug("==================================> SendImageToTimeline: Step 4");
+        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
+        bmp.recycle();
+        msg.thumbData = bmpToByteArray(thumbBmp, true);
+        
+        Log.debug("==================================> SendImageToTimeline: Step 5");
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("img");
+        req.message = msg;
+        req.scene = mTargetScene;
+        api.sendReq(req);
+        
+        Log.debug("==================================> SendImageToTimeline: Step 6");
+      }
+
+      public byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bmp.compress(CompressFormat.PNG, 100, output);
+        if (needRecycle) {
+          bmp.recycle();
+        }
+
+        byte[] result = output.toByteArray();
+          try {
+          output.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+        return result;
+      }
+
+      public void InitWechatSdk(String text) {
+        APP_ID = text;
+      }
+    </insert>
+	</gameActivityClassAdditions>
+  
+  <!--buildGradleAdditions: 编写需要在BuildGradle中增加的代码-->
+	<buildGradleAdditions>
+		<insert>
+      <!--repositories {
+        flatDir{ dirs '/src/main/libs/' }
+      }
+      dependencies { implementation (name:'AndroidLib', ext:'aar') }
+      dependencies { implementation (name:'wechat-sdk-android-without-mta-6.8.0', ext:'aar') }-->
+
+      dependencies {
+        api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+      }
+    </insert>
+	</buildGradleAdditions>
+</root>
